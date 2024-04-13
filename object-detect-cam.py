@@ -13,9 +13,14 @@ import cv2
 #model = YOLO("yolov8n.yaml")  # build a new model from scratch
 model = YOLO("yolov8s.pt")  # load a pretrained model (recommended for training)
 
-# Use the model
+#For Nvidia Jetson Nano: TensorFlow RT for better inference time
+model.export(format='engine')
+#load to TensorRT mode
+trt_model = YOLO('yolov8s.engine')
 
-results = model.predict(source="0", show=True, conf=0.4, save=True)
+
+# Use the model - running inference
+results = trt_model.predict(source="0", show=True, conf=0.4, save=True)
 print (results)
 
 #condition: do X when detect one or two person?
